@@ -70,6 +70,11 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    // PARA O JSON PODER LER TEM QUE RETORNAR GET PQ O QUE VALE É O GET //
+    public Double getSubTotal(){
+        return price * quantity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

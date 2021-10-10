@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 // CLASSE CONTROLADOR REST - FAZ CONEXÃO COM A APPLICAÇÃO BACK END PARA FRONT //
+// É ATRAVÉS DELA QUE CONSEGUIMOS BUSCAR OS DADOS NO LOCALHOST E POSTMAN //
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderResource {

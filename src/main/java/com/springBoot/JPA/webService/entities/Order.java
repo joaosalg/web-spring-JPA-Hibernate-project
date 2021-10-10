@@ -41,6 +41,10 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
 
+    // ASSOCIAÇÃO COM O PAYMENT 1-1 - cascade = CascadeType.ALL = PARA MAPEAR A MESMA ID PARA AMBOS//
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
+
     public Order() {
     }
 
@@ -71,6 +75,14 @@ public class Order implements Serializable {
         return OrderStatus.valueOf(orderStatus);
     }
 
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
     public Set<OrderItem> getItems(){
         return items;
     }
@@ -87,6 +99,16 @@ public class Order implements Serializable {
 
     public void setClient(User client) {
         this.client = client;
+    }
+
+    // PARA O JSON PODER LER TEM QUE RETORNAR GET PQ O QUE VALE É O GET //
+    // PARA SOMAR TODOS OS ITENS DO ORDERITEM //
+    public Double getTotal(){
+        double sum = 0.0;
+        for (OrderItem x : items){
+            sum += x.getSubTotal();
+        }
+        return sum;
     }
 
     @Override
