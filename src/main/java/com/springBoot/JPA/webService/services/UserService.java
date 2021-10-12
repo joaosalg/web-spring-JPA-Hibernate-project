@@ -2,10 +2,14 @@ package com.springBoot.JPA.webService.services;
 
 import com.springBoot.JPA.webService.entities.User;
 import com.springBoot.JPA.webService.repositories.UserRepository;
+import com.springBoot.JPA.webService.services.exceptions.DatabaseException;
 import com.springBoot.JPA.webService.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,17 +36,30 @@ public class UserService {
         return userRepository.save(obj);
     }
 
-    //MÉTODO DE DELEÇÃO DE USER //
+    //MÉTODO DE DELEÇÃO DE USER + TRATAMENTO DE EXCEÇÃO USANDO AS CLASSES CRIADAS NO CAP DE EXCEÇAO DE FINDBYID//
     public void delete(Long id) {
-        userRepository.deleteById(id);
+        try {
+            userRepository.deleteById(id);
+        }
+        catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     // PARA ATUALIZAR - UTILIZAR ID PARA IDENTIFICAR E USER OBJ COM OS DADOS A SEREM ATUALIZADOS //
     // GET ONE NÃO VASCULHA O BANCO DE DADOS, ELE PREPARA UM OBJ MONITORADO PARA DEPOIS VOCÊ MEXER NELE //
     public User update(Long id, User obj){
-        User entity = userRepository.getOne(id);
-        updateData(entity, obj);
-        return userRepository.save(entity);
+        try {
+            User entity = userRepository.getOne(id);
+            updateData(entity, obj);
+            return userRepository.save(entity);
+        }
+        catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     // MÉTODO PARA ATUALIZAR OS MÉTODOS DO ENTITY OU SEJA OS DADOS QUE ESTÃO NOS BANCOS DE DADOS COM O QUE CHEGOU NO OBJ //

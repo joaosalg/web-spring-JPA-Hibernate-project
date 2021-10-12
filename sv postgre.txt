@@ -1,0 +1,13 @@
+postgres://
+rhibpvwmwwfvop
+
+e3b02a470951fc2a67162c2ce2018e50b62ad33cfe1dedd215db69651eb720b9
+
+ec2-34-203-91-150.compute-1.amazonaws.com
+
+5432
+
+de9f946ls088b
+
+
+postgres://rhibpvwmwwfvop:e3b02a470951fc2a67162c2ce2018e50b62ad33cfe1dedd215db69651eb720b9@ec2-34-203-91-150.compute-1.amazonaws.com:5432/de9f946ls088b
